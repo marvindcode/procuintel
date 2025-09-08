@@ -15,4 +15,3 @@ RSpec.describe "Orders", type: :request do
     expect(response.body).to include("Order ")
   end
 end
-

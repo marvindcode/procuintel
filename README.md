@@ -22,3 +22,7 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## Lesson 8
+- GET routes, test routes with Rspec.
+

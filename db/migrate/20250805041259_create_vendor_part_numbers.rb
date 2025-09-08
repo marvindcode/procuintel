@@ -14,8 +14,6 @@ class CreateVendorPartNumbers < ActiveRecord::Migration[8.0]
     end
 
     add_index :vendor_part_numbers, :vendor_item
-    add_index :vendor_part_numbers, [:vendor_id, :part_id], unique: true
-
+    add_index :vendor_part_numbers, [ :vendor_id, :part_id ], unique: true
   end
 end
-
