@@ -1,0 +1,13 @@
+<h1>Vendors</h1>
+<table>
+  <thead><tr><th>Name</th><th>Vendor #</th><th>Items</th></tr></thead>
+  <tbody>
+    <% @vendors.each do |v| %>
+      <tr>
+        <td><%= link_to v.name, vendor_path(v) %></td>
+        <td><%= v.vendor_number %></td>
+        <td><%= v.read_attribute(:items_count) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

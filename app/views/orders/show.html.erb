@@ -1,0 +1,18 @@
+<h1>Order <%= @order.purchase_number %> (<%= @order.status %>)</h1>
+<p>Buyer: <%= @order.user.email %> | Total: <%= number_to_currency(@order.order_total) %></p>
+
+<h2>Lines</h2>
+<table>
+  <thead><tr><th>Part #</th><th>UOM</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+  <tbody>
+    <% @order.order_lines.each do |l| %>
+      <tr>
+        <td><%= l.part.part_number %></td>
+        <td><%= l.uom&.code || l.part.uom&.code %></td>
+        <td><%= l.quantity %></td>
+        <td><%= number_to_currency(l.price) %></td>
+        <td><%= number_to_currency(l.quantity * l.price) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

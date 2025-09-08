@@ -1,0 +1,32 @@
+<h1><%= @vendor.name %></h1>
+<p>Vendor #: <%= @vendor.vendor_number %> | Location: <%= @vendor.location %></p>
+
+<h2>Items</h2>
+<table>
+  <thead><tr><th>Part #</th><th>Vendor Item</th><th>UOM</th><th>Price</th><th>Lead (d)</th></tr></thead>
+  <tbody>
+    <% @items.each do |i| %>
+      <tr>
+        <td><%= i.part.part_number %></td>
+        <td><%= i.vendor_item %></td>
+        <td><%= i.uom&.code %></td>
+        <td><%= number_to_currency(i.price) %></td>
+        <td><%= i.lead_time %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Lead Time Performance</h2>
+<table>
+  <thead><tr><th>Part #</th><th>Expected</th><th>Actual</th></tr></thead>
+  <tbody>
+    <% @lead_times.each do |lt| %>
+      <tr>
+        <td><%= lt.part.part_number %></td>
+        <td><%= lt.expected_lead_time %></td>
+        <td><%= lt.actual_lead_time %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

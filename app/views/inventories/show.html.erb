@@ -1,0 +1,13 @@
+<h1>Inventory #<%= @inventory.id %></h1>
+<ul>
+  <li>Part: <%= @inventory.part.part_number %> – <%= @inventory.part.name %></li>
+  <li>Warehouse: <%= @inventory.warehouse.name %></li>
+  <li>UOM: <%= @inventory.uom&.code || @inventory.part.uom&.code %></li>
+  <li>Quantity: <%= @inventory.quantity %></li>
+  <li>Safe Inventory: <%= @inventory.safe_inventory %></li>
+  <li>Status: <%= @inventory.status %></li>
+  <li>Value: <%= number_to_currency(@inventory.inventory_value) %></li>
+</ul>
+<% if @inventory.quantity < @inventory.safe_inventory %>
+  <p><strong>Reorder Hint:</strong> Need <%= @inventory.safe_inventory - @inventory.quantity %> more.</p>
+<% end %>

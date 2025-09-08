@@ -1,0 +1,23 @@
+<h1>Procuintel Dashboard</h1>
+<div class="kpis">
+  <div>Total Inventory Value: <%= number_to_currency(@total_inventory_value) %></div>
+  <div>Open POs: <%= @open_pos %></div>
+</div>
+
+<h2>Low-Stock Alerts</h2>
+<table>
+  <thead>
+    <tr><th>Part #</th><th>Warehouse</th><th>Qty</th><th>Safe</th><th>Gap</th></tr>
+  </thead>
+  <tbody>
+    <% @low_stock.each do |inv| %>
+      <tr>
+        <td><%= inv.part.part_number %></td>
+        <td><%= inv.warehouse.name %></td>
+        <td><%= inv.quantity %></td>
+        <td><%= inv.safe_inventory %></td>
+        <td><%= inv.safe_inventory - inv.quantity %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

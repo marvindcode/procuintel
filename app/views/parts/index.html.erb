@@ -1,0 +1,16 @@
+<h1>Parts</h1>
+<table>
+  <thead>
+    <tr><th>Part #</th><th>Name</th><th>UOM</th><th>Vendors</th></tr>
+  </thead>
+  <tbody>
+    <% @parts.each do |p| %>
+      <tr>
+        <td><%= link_to p.part_number, part_path(p) %></td>
+        <td><%= p.name %></td>
+        <td><%= p.uom&.code %></td>
+        <td><%= p.read_attribute(:vendors_count) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

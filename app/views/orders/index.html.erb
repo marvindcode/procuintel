@@ -1,0 +1,16 @@
+<h1>Orders</h1>
+<table>
+  <thead>
+    <tr><th>PO #</th><th>Status</th><th>Total</th><th>Created</th></tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |o| %>
+      <tr>
+        <td><%= link_to o.purchase_number, order_path(o) %></td>
+        <td><%= o.status %></td>
+        <td><%= number_to_currency(o.order_total) %></td>
+        <td><%= o.created_at.to_s(:db) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

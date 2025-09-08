@@ -1,0 +1,14 @@
+<h1>Demand Forecasts</h1>
+<table>
+  <thead><tr><th>Part #</th><th>Warehouse</th><th>Forecast Date</th><th>Qty</th></tr></thead>
+  <tbody>
+    <% @forecasts.each do |f| %>
+      <tr>
+        <td><%= f.part.part_number %></td>
+        <td><%= f.warehouse.name %></td>
+        <td><%= f.forecast_date %></td>
+        <td><%= f.forecast_quantity %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,22 @@
+<h1>Inventories</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Part #</th><th>Warehouse</th><th>UOM</th>
+      <th>Qty</th><th>Safe</th><th>Status</th><th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @inventories.each do |inv| %>
+      <tr>
+        <td><%= inv.part.part_number %></td>
+        <td><%= inv.warehouse.name %></td>
+        <td><%= inv.uom&.code || inv.part.uom&.code %></td>
+        <td><%= inv.quantity %></td>
+        <td><%= inv.safe_inventory %></td>
+        <td><%= inv.status %></td>
+        <td><%= number_to_currency(inv.inventory_value) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

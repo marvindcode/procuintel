@@ -1,0 +1,48 @@
+<h1><%= @part.part_number %> – <%= @part.name %></h1>
+<p>UOM: <%= @part.uom&.code %> | Category: <%= @part.category %> | Active: <%= @part.is_active %></p>
+
+<h2>Inventory by Warehouse</h2>
+<table>
+  <thead><tr><th>Warehouse</th><th>Qty</th><th>Safe</th><th>Status</th><th>Value</th></tr></thead>
+  <tbody>
+    <% @inventories.each do |inv| %>
+      <tr>
+        <td><%= inv.warehouse.name %></td>
+        <td><%= inv.quantity %></td>
+        <td><%= inv.safe_inventory %></td>
+        <td><%= inv.status %></td>
+        <td><%= number_to_currency(inv.inventory_value) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Vendors & Pricing</h2>
+<table>
+  <thead><tr><th>Vendor</th><th>Vendor Item</th><th>UOM</th><th>Price</th><th>Lead (d)</th></tr></thead>
+  <tbody>
+    <% @vendor_items.each do |vpi| %>
+      <tr>
+        <td><%= vpi.vendor.name %></td>
+        <td><%= vpi.vendor_item %></td>
+        <td><%= vpi.uom&.code %></td>
+        <td><%= number_to_currency(vpi.price) %></td>
+        <td><%= vpi.lead_time %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Recent Forecasts</h2>
+<table>
+  <thead><tr><th>Date</th><th>Warehouse</th><th>Qty</th></tr></thead>
+  <tbody>
+    <% @recent_forecasts.each do |f| %>
+      <tr>
+        <td><%= f.forecast_date %></td>
+        <td><%= f.warehouse.name %></td>
+        <td><%= f.forecast_quantity %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
