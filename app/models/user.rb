@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  enum :user_role, { viewer: 0, buyer: 1, admin: 2 } 
+  enum :user_role, { viewer: 0, buyer: 1, admin: 2 }
 
   has_many :orders, dependent: :nullify
   validates :name,  presence: true

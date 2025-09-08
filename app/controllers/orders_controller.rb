@@ -4,6 +4,6 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = Order.includes(order_lines: [:part, :uom]).find(params[:id])
+    @order = Order.includes(order_lines: [ :part, :uom ]).find(params[:id])
   end
 end

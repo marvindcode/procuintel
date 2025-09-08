@@ -6,5 +6,3 @@ class Vendor < ApplicationRecord
   validates :name, presence: true
   validates :vendor_number, uniqueness: true, allow_nil: true
 end
-
-

@@ -14,4 +14,3 @@ RSpec.describe "Parts", type: :request do
     expect(response.body).to include(part.part_number)
   end
 end
-

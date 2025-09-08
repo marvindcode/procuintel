@@ -8,21 +8,20 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-  
+
   # Defines the root path route ("/")
   # root "posts#index"
 
   get "/dashboard", to: "dashboard#show", as: :dashboard
 
 
-  resources :inventories, only: [:index, :show]
-  resources :parts,       only: [:index, :show]
-  resources :orders,      only: [:index, :show]
-  resources :vendors,     only: [:index, :show]
-  resources :demand_forecasts, only: [:index]
+  resources :inventories, only: [ :index, :show ]
+  resources :parts,       only: [ :index, :show ]
+  resources :orders,      only: [ :index, :show ]
+  resources :vendors,     only: [ :index, :show ]
+  resources :demand_forecasts, only: [ :index ]
 
   root "dashboard#show"
 
-  get "/demand_forecasts", to: "demand_forecasts#index" 
-
+  get "/demand_forecasts", to: "demand_forecasts#index"
 end

@@ -1,5 +1,5 @@
 class Inventory < ApplicationRecord
-  enum :status, { active: 0, inactive: 1 } 
+  enum :status, { active: 0, inactive: 1 }
 
   alias_attribute :inventory_value, :value
 
