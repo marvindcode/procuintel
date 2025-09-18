@@ -4,5 +4,4 @@ class DemandForecast < ApplicationRecord
 
   validates :forecast_date, presence: true
   validates :forecast_quantity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-
 end

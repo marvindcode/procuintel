@@ -4,4 +4,3 @@ class AddUomRefToInventories < ActiveRecord::Migration[8.0]
     add_foreign_key :inventories, :uoms unless foreign_key_exists?(:inventories, :uoms)
   end
 end
-

@@ -1,0 +1,15 @@
+<%= form_with model: @inventory do |f| %>
+  <div>
+    <%= f.label :warehouse_id, "Warehouse" %><br>
+    <%= f.collection_select :warehouse_id, @warehouses, :id, :name, include_blank: true %>
+  </div>
+  <div>
+    <%= f.label :part_id, "Part" %><br>
+    <%= f.collection_select :part_id, @parts, :id, :part_number, include_blank: true %>
+  </div>
+  <div><%= f.label :quantity %><br><%= f.number_field :quantity, step: 1 %></div>
+  <div><%= f.label :safe_inventory %><br><%= f.number_field :safe_inventory, step: 1 %></div>
+  <div><%= f.label :unit_of_measure %><br><%= f.text_field :unit_of_measure %></div>
+  <div><%= f.label :value %><br><%= f.number_field :value, step: 0.01 %></div>
+  <%= f.submit %>
+<% end %>
