@@ -1,0 +1,7 @@
+<%= form_with model: @part do |f| %>
+  <div><%= f.label :part_number %><br><%= f.text_field :part_number %></div>
+  <div><%= f.label :description %><br><%= f.text_field :description %></div>
+  <div><%= f.label :unit_of_measure %><br><%= f.text_field :unit_of_measure %></div>
+  <div><%= f.label :value %><br><%= f.number_field :value, step: 0.01 %></div>
+  <%= f.submit %>
+<% end %>

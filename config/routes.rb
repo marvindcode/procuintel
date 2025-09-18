@@ -11,17 +11,18 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-
+  
   get "/dashboard", to: "dashboard#show", as: :dashboard
-
-
-  resources :inventories, only: [ :index, :show ]
-  resources :parts,       only: [ :index, :show ]
-  resources :orders,      only: [ :index, :show ]
-  resources :vendors,     only: [ :index, :show ]
-  resources :demand_forecasts, only: [ :index ]
-
   root "dashboard#show"
 
-  get "/demand_forecasts", to: "demand_forecasts#index"
+  resources :warehouses                             
+  resources :inventories, only: [:new, :create, :edit, :update, :index, :show]
+  resources :parts,   except: [:destroy]
+  resources :vendors, except: [:destroy]
+
+  resources :orders, except: [:destroy] do
+    resources :order_lines, only: [:create, :update, :destroy], shallow: true
+  end
+
+  resources :demand_forecasts, only: [:index]
 end
