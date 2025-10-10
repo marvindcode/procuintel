@@ -1,18 +1,19 @@
 class CreateInventories < ActiveRecord::Migration[8.0]
   def change
     create_table :inventories do |t|
-      t.references :part,      null: false, foreign_key: true
-      t.references :warehouse, null: false, foreign_key: true
-      t.integer :quantity,        null: false, default foreign_key: true
-      t.decimal :inventory_value, null: false
-      t.integer :safe_inventory,  null: false
-      t.integer :status,          null: false
+      t.integer :quantity,       null: false, default: 0
+      t.string  :unit_of_measure
+      t.decimal :value,          precision: 12, scale: 2, null: false, default: 0
+      t.integer :safe_inventory, null: false, default: 0
 
+      t.references :warehouse, null: false
+      t.references :part,      null: false
+
+      t.integer :status, null: false, default: 0
       t.timestamps
     end
 
-    add_index :inventories, [:warehouse_id, :part_id], unique: true
-    add_index :inventories, :part_id
+    add_foreign_key :inventories, :warehouses
+    add_foreign_key :inventories, :parts
   end
 end
-

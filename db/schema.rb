@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_08_022359) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_08_060136) do
   create_table "demand_forecasts", force: :cascade do |t|
     t.integer "part_id", null: false
     t.integer "warehouse_id", null: false
@@ -59,8 +59,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_022359) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status", default: 0, null: false
+    t.integer "vendor_id"
     t.index ["status"], name: "index_orders_on_status"
     t.index ["user_id"], name: "index_orders_on_user_id"
+    t.index ["vendor_id"], name: "index_orders_on_vendor_id"
   end
 
   create_table "parts", force: :cascade do |t|
@@ -89,12 +91,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_022359) do
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.string "role"
-    t.string "email"
+    t.string "role", null: false
+    t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_role", default: 0, null: false
-    t.index ["user_role"], name: "index_users_on_user_role"
+    t.string "username", null: false
+    t.string "password_digest", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "vendor_lead_times", force: :cascade do |t|
@@ -143,6 +157,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_022359) do
   add_foreign_key "order_lines", "orders"
   add_foreign_key "order_lines", "parts"
   add_foreign_key "orders", "users"
+  add_foreign_key "orders", "vendors"
   add_foreign_key "vendor_lead_times", "parts"
   add_foreign_key "vendor_lead_times", "vendors"
   add_foreign_key "vendor_part_numbers", "parts"

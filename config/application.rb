@@ -1,5 +1,8 @@
 require_relative "boot"
 
+require "rails/all"
+require 'devise'  # Ensures early load for models
+
 require "rails"
 # Pick the frameworks you want:
 require "active_model/railtie"
@@ -22,6 +25,8 @@ module Procuintel
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
+
+    config.autoload_paths << Rails.root.join("lib")
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

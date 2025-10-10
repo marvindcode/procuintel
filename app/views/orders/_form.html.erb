@@ -1,0 +1,25 @@
+<%= form_with model: @order do |f| %>
+  <div>
+    <%= f.label :vendor_id, "Vendor" %><br>
+    <%= f.collection_select :vendor_id, @vendors, :id, :name, include_blank: true %>
+  </div>
+  <div><%= f.label :order_date %><br><%= f.date_field :order_date %></div>
+  <div><%= f.label :expected_date %><br><%= f.date_field :expected_date %></div>
+  <div><%= f.label :status %><br><%= f.select :status, %w[draft sent received closed canceled], include_blank: true %></div>
+  <div><%= f.label :notes %><br><%= f.text_area :notes %></div>
+
+  <h3>Lines</h3>
+  <div id="order-lines">
+    <%= f.fields_for :order_lines do |lf| %>
+      <div class="line">
+        <%= lf.collection_select :part_id, @parts, :id, :part_number, include_blank: true %>
+        <%= lf.number_field :quantity, step: 1, placeholder: "Qty" %>
+        <%= lf.number_field :price, step: 0.01, placeholder: "Unit Price" %>
+        <%= lf.text_field :unit_of_measure, placeholder: "UOM" %>
+        <%= lf.check_box :_destroy %> Remove
+      </div>
+    <% end %>
+  </div>
+
+  <%= f.submit %>
+<% end %>

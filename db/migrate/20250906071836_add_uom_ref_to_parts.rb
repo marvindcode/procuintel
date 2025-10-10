@@ -1,4 +1,4 @@
-class AddUomRefToParts < ActiveRecord::Migration[7.1]
+class AddUomRefToParts < ActiveRecord::Migration[8.0]
   def change
     add_reference :parts, :uom, index: true, null: true unless column_exists?(:parts, :uom_id)
 
@@ -7,5 +7,3 @@ class AddUomRefToParts < ActiveRecord::Migration[7.1]
     end
   end
 end
-
-

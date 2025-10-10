@@ -1,7 +1,11 @@
 class User < ApplicationRecord
-  enum :user_role, { viewer: 0, buyer: 1, admin: 2 } 
 
-  has_many :orders, dependent: :nullify
-  validates :name,  presence: true
-  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  validates :name, presence: true
+  validates :username, presence: true, uniqueness: true
+  validates :role, presence: true, inclusion: { in: %w[admin buyer viewer] }
+
+  has_many :orders
 end
