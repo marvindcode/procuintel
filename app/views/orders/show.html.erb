@@ -1,5 +1,5 @@
-<h1>Order <%= @order.purchase_number %> (<%= @order.status %>)</h1>
-<p>Buyer: <%= @order.user.email %> | Total: <%= number_to_currency(@order.order_total) %></p>
+<h1>Order #<%= @order.id %></h1>
+<p>PO: <%= @order.purchase_number %></p>
 
 <h2>Lines</h2>
 <table>

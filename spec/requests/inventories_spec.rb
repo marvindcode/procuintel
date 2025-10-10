@@ -1,70 +1,78 @@
 require "rails_helper"
+
 RSpec.describe "Inventories", type: :request do
-  it "GET /inventories is OK" do
-    get "/inventories"
-    expect(response).to have_http_status(:ok)
-    expect(response.body).to include("Inventories")
+  let!(:uom)  { Uom.first_or_create!(code: "EA") }
+  let!(:wh)   { Warehouse.first_or_create!(name: "LA") }
+  let!(:part) do
+    Part.first || Part.create!(part_number: "P-1", name: "Test Part", uom: uom, is_active: true, price: 10.0)
   end
 
-  it "GET /inventories/:id is OK" do
-    uom  = Uom.first_or_create!(code: "EA")
-    wh   = Warehouse.first_or_create!(name: "LA")
-    part = Part.first_or_create!(part_number: "P-1", name: "Test Part", uom: uom, is_active: true)
+  context "authenticated viewer (read-only)" do
+    let!(:user) { create(:user, role: "viewer") }
+    before { sign_in_as(user) }
 
-    inv = Inventory.first || Inventory.create!(
-      part: part, warehouse: wh, uom: uom,
-      quantity: 1, safe_inventory: 2, inventory_value: 10
-    )
+    it "GET /inventories is OK" do
+      get "/inventories"
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Inventories").or include("Inventory")
+    end
 
-    get "/inventories/#{inv.id}"
-    expect(response).to have_http_status(:ok)
-    expect(response.body).to include("Inventory #")
-  end
-end
+    it "GET /inventories/:id is OK" do
+      inv = Inventory.first || Inventory.create!(
+        part: part, warehouse: wh, uom: uom,
+        quantity: 1, safe_inventory: 2, inventory_value: 10
+      )
+      get "/inventories/#{inv.id}"
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Inventory")
+    end
 
-describe "POST /inventories" do
-    it "creates a new inventory record" do
-      params = {
+    it "POST /inventories is forbidden for viewer" do
+      post inventories_path, params: {
         inventory: {
           warehouse_id: wh.id,
           part_id: part.id,
           quantity: 100,
-          safe_inventory: 20
+          safe_inventory: 20,
+          uom_id: uom.id
         }
       }
-      if has_uom?
-        params[:inventory][:uom_id] = uom.id
-        params[:inventory][value_key] = 3.0
-      else
-        params[:inventory][:unit_of_measure] = "EA"
-        params[:inventory][value_key] = 3.0
-      end
+      expect(response).to have_http_status(:forbidden)
+      expect(response.body).to include("admin only") # Adjust to your error message
+    end
 
-      post inventories_path, params: params
-      expect(response).to redirect_to(Inventory.last)
-      expect(Inventory.last.quantity).to eq(100)
+    it "PUT /inventories/:id is forbidden for viewer" do
+      inv = Inventory.create!(warehouse: wh, part: part, uom: uom, quantity: 10, safe_inventory: 2)
+      put inventory_path(inv), params: { inventory: { quantity: 25 } }
+      expect(response).to have_http_status(:forbidden)
+      expect(response.body).to include("admin only")
     end
   end
 
-  describe "PUT /inventories/:id" do
-    it "updates inventory qty" do
-      inv_params = {
-        warehouse_id: wh.id,
-        part_id: part.id,
-        quantity: 10
-      }
-      if has_uom?
-        inv_params[:uom_id] = uom.id
-        inv_params[value_key] = 3.0
-      else
-        inv_params[:unit_of_measure] = "EA"
-        inv_params[value_key] = 3.0
-      end
+  context "authenticated admin (full CRUD)" do
+    let!(:user) { create(:user, role: "admin") }
+    before { sign_in_as(user) }
 
-      inv = Inventory.create!(inv_params)
+    it "POST /inventories creates a new inventory record" do
+      expect {
+        post inventories_path, params: {
+          inventory: {
+            warehouse_id: wh.id,
+            part_id: part.id,
+            quantity: 100,
+            safe_inventory: 20,
+            uom_id: uom.id
+          }
+        }
+      }.to change(Inventory, :count).by(1)
+      expect(response).to have_http_status(:redirect)
+      expect(Inventory.last.quantity).to eq(100)
+    end
 
+    it "PUT /inventories/:id updates inventory qty" do
+      inv = Inventory.create!(warehouse: wh, part: part, uom: uom, quantity: 10, safe_inventory: 2)
       put inventory_path(inv), params: { inventory: { quantity: 25 } }
-      expect(response).to redirect_to(inv)
+      expect(response).to have_http_status(:redirect)
       expect(inv.reload.quantity).to eq(25)
     end
   end

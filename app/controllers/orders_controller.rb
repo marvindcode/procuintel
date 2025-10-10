@@ -1,43 +1,25 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update]
-  before_action :preload,   only: [:new, :create, :edit, :update]
+  before_action :require_login
+  before_action :set_order, only: %i[show update]
 
   def index
-    @orders = Order
-      .includes(:user, :vendor) 
-      .order(created_at: :desc)
+    @orders = Order.includes(:vendor, :order_lines).order(created_at: :desc)
   end
 
-  def show
-    
-  end
-
-
-  def new
-    @order = Order.new(vendor_id: params[:vendor_id])
-    3.times { @order.order_lines.build } 
-  end
+  def show; end
 
   def create
     @order = Order.new(order_params)
-  
-      @order.user = current_user
-
     if @order.save
-      @order.recalc_total! if @order.respond_to?(:recalc_total!)
-      redirect_to @order, notice: "PO created."
+      redirect_to @order
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-
-  def edit; end
-
   def update
     if @order.update(order_params)
-      @order.recalc_total! if @order.respond_to?(:recalc_total!)
-      redirect_to @order, notice: "PO updated."
+      redirect_to @order
     else
       render :edit, status: :unprocessable_entity
     end
@@ -46,34 +28,13 @@ class OrdersController < ApplicationController
   private
 
   def set_order
-    @order = Order
-      .includes(order_lines: [:part, :uom]) 
-      .find(params[:id])
-  end
-
-  def preload
-    @vendors = Vendor.order(:name)
-    @parts   = Part.order(:part_number)
-    @uoms    = Uom.order(:name) if defined?(Uom)
+    @order = Order.find(params[:id])
   end
 
   def order_params
     params.require(:order).permit(
-      :vendor_id,
-      :purchase_number,  
-      :order_date,
-      :expected_date,
-      :status,
-      :notes,
-      order_lines_attributes: [
-        :id,
-        :part_id,
-        :quantity,
-        :price,
-        :uom_id,           
-        :unit_of_measure,  
-        :_destroy
-      ]
+      :purchase_number, :vendor_id,
+      order_lines_attributes: %i[id part_id quantity _destroy]
     )
   end
 end
