@@ -1,16 +1,12 @@
 class Part < ApplicationRecord
   belongs_to :uom, optional: true
+  has_many :inventories, dependent: :destroy
+  has_many :vendor_part_numbers, dependent: :destroy
+  has_many :vendors, through: :vendor_part_numbers
 
-  has_many :order_lines, dependent: :nullify if defined?(OrderLine)
+  has_many :demand_forecasts, dependent: :destroy
 
   validates :part_number, presence: true, uniqueness: true
   validates :price, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
-
-  before_validation :normalize_part_number
-
-  private
-
-  def normalize_part_number
-    self.part_number = part_number.to_s.strip.upcase
-  end
+  validates :lead_time, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 end

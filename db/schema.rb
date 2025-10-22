@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_08_060136) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_22_032526) do
   create_table "demand_forecasts", force: :cascade do |t|
     t.integer "part_id", null: false
     t.integer "warehouse_id", null: false
@@ -24,7 +24,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_060136) do
   end
 
   create_table "inventories", force: :cascade do |t|
-    t.integer "quantity"
+    t.integer "quantity", default: 0
     t.string "unit_of_measure"
     t.decimal "value"
     t.integer "safe_inventory"
@@ -66,7 +66,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_060136) do
   end
 
   create_table "parts", force: :cascade do |t|
-    t.string "part_number"
+    t.string "part_number", null: false
     t.string "name"
     t.string "category"
     t.text "description"
@@ -78,6 +78,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_060136) do
     t.boolean "is_active", default: true, null: false
     t.integer "uom_id"
     t.index ["is_active"], name: "index_parts_on_is_active"
+    t.index ["part_number"], name: "index_parts_on_part_number", unique: true
     t.index ["uom_id"], name: "index_parts_on_uom_id"
   end
 
@@ -96,7 +97,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_060136) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "username", null: false
-    t.string "password_digest", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -130,6 +130,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_060136) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["part_id"], name: "index_vendor_part_numbers_on_part_id"
+    t.index ["vendor_id", "part_id"], name: "idx_vpn_vendor_part", unique: true
     t.index ["vendor_id"], name: "index_vendor_part_numbers_on_vendor_id"
   end
 
@@ -152,7 +153,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_060136) do
   add_foreign_key "demand_forecasts", "parts"
   add_foreign_key "demand_forecasts", "warehouses"
   add_foreign_key "inventories", "parts"
+  add_foreign_key "inventories", "parts"
   add_foreign_key "inventories", "uoms"
+  add_foreign_key "inventories", "warehouses"
   add_foreign_key "inventories", "warehouses"
   add_foreign_key "order_lines", "orders"
   add_foreign_key "order_lines", "parts"

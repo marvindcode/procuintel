@@ -1,4 +1,41 @@
-<h1>Parts</h1>
-<% @parts.each do |p| %>
-  <div><%= link_to p.part_number, part_path(p) %></div>
-<% end %>
+<div class="card">
+  <h2>Parts</h2>
+
+  <% if current_user&.role == "admin" %>
+    <p><%= link_to "New Part", new_part_path, class: "btn" %></p>
+  <% end %>
+
+  <% if @parts.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Part #</th>
+          <th>Name</th>
+          <th>Lead time</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @parts.each do |part| %>
+          <tr>
+            <td><%= link_to part.part_number, part_path(part) %></td>
+            <td><%= part.name %></td>
+            <td><%= part.lead_time %> days</td>
+            <td style="text-align:right">
+              <% if current_user&.role == "admin" %>
+                <%= link_to "Edit", edit_part_path(part), class: "btn secondary" %>
+                <%= link_to "Delete", part_path(part),
+                      data: { turbo_method: :delete, turbo_confirm: "Delete #{part.part_number}?" },
+                      class: "btn danger" %>
+              <% else %>
+                <%= link_to "View", part_path(part), class: "btn secondary" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No parts yet.</p>
+  <% end %>
+</div>

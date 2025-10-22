@@ -14,8 +14,20 @@ class VendorsController < ApplicationController
     @vendor = Vendor.new
   end
 
-  def create
+  # def create
+  #   @vendor = Vendor.new(vendor_params)
+  #   if @vendor.save
+  #     redirect_to @vendor, notice: 'Vendor created.'
+  #   else
+  #     render :new, status: :unprocessable_entity
+  #   end
+  # end
+
+    def create
     @vendor = Vendor.new(vendor_params)
+    puts "Vendor params: #{vendor_params.inspect}"  
+    puts "Valid? #{@vendor.valid?}" 
+    puts "Errors: #{@vendor.errors.full_messages.inspect}" 
     if @vendor.save
       redirect_to @vendor, notice: 'Vendor created.'
     else

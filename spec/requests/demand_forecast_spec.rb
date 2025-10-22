@@ -8,6 +8,5 @@ RSpec.describe "DemandForecasts", type: :request do
     get "/demand_forecasts"
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("Demand Forecasts")
-    puts response.body 
   end
 end

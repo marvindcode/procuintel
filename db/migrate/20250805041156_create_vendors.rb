@@ -4,6 +4,7 @@ class CreateVendors < ActiveRecord::Migration[8.0]
       t.string :name
       t.string :vendor_number
       t.string :location
+      
       t.timestamps
     end
 

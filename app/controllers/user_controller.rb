@@ -1,19 +1,16 @@
 class UsersController < ApplicationController
-  skip_before_action :require_login, only: [:new, :create]
-  skip_before_action :authenticate_user!, only: [:new, :create] if defined?(Devise)
+  skip_before_action :authenticate_user!, only: [:new, :create]
 
   def new
-    Rails.logger.debug "Reached UsersController#new"
     @user = User.new
   end
 
   def create
-    Rails.logger.debug "Reached UsersController#create"
     @user = User.new(user_params)
     if @user.save
-      redirect_to root_path, notice: "User created successfully"
+      session[:user_id] = @user.id  
+      redirect_to dashboard_path, notice: "Welcome!"
     else
-      Rails.logger.debug "User errors: #{@user.errors.full_messages}"
       render :new, status: :unprocessable_entity
     end
   end

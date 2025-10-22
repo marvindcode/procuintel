@@ -1,12 +1,14 @@
 class OrdersController < ApplicationController
-  before_action :require_login
-  before_action :set_order, only: %i[show update]
+  before_action :set_order, only: [:show, :update]
 
   def index
-    @orders = Order.includes(:vendor, :order_lines).order(created_at: :desc)
+    @orders = Order.all
+    render :index
   end
 
-  def show; end
+  def show
+    render :show
+  end
 
   def create
     @order = Order.new(order_params)
@@ -32,10 +34,6 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(
-      :purchase_number, :vendor_id,
-      order_lines_attributes: %i[id part_id quantity _destroy]
-    )
+    params.require(:order).permit(:vendor_id, :status, order_lines_attributes: [:id, :part_id, :quantity, :price, :uom_id, :_destroy])
   end
 end
-

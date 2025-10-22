@@ -1,11 +1,25 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { registrations: 'users/registrations' }
+  root "dashboard#index"
+  get "/dashboard", to: "dashboard#index"
 
-  resources :vendors  
-  resources :parts
-  resources :orders
-  resources :inventories
+  devise_for :users
 
-  get 'dashboard', to: 'dashboard#index'
-  root to: 'dashboard#index'
+  get    "/login",  to: redirect("/users/sign_in")
+  delete "/logout", to: "devise/sessions#destroy"
+
+  resources :vendors
+  resources :warehouses
+  resources :parts do
+    resources :inventories, shallow: true
+    resources :demand_forecasts, only: [:index]
+  end
+  resources :inventories, only: [:index, :show]
+  resources :demand_forecasts, only: [:index]
 end
+
+  
+
+    
+
+
+

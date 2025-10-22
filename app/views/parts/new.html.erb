@@ -1,0 +1,55 @@
+<h1>New Part</h1>
+
+<%= form_with(model: @part, local: true) do |form| %>
+  <% if @part.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@part.errors.count, "error") %> prohibited this part from being saved:</h2>
+      <ul>
+        <% @part.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :part_number %><br>
+    <%= form.text_field :part_number %>
+  </div>
+
+  <div>
+    <%= form.label :name %><br>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :price %><br>
+    <%= form.number_field :price, step: 0.01 %>
+  </div>
+
+  <div>
+    <%= form.label :uom_id %><br>
+    <%= form.collection_select :uom_id, Uom.all, :id, :code %>
+  </div>
+
+  <div>
+    <%= form.label :category %><br>
+    <%= form.text_field :category %>
+  </div>
+
+  <div>
+    <%= form.label :lead_time %><br>
+    <%= form.number_field :lead_time %>
+  </div>
+
+  <div>
+    <%= form.label :is_active %><br>
+    <%= form.check_box :is_active %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<%= link_to "Back to Parts", parts_path %>

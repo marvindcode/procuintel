@@ -1,6 +1,5 @@
 class Uom < ApplicationRecord
   has_many :parts
-
-  validates :code, presence: true, uniqueness: true
+  has_many :order_lines
+  has_many :inventories
 end
-

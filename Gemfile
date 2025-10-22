@@ -17,6 +17,8 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem "pundit"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
@@ -58,9 +60,18 @@ group :development do
   gem "web-console"
 end
 
+group :test do
+  gem 'factory_bot_rails'  # Add this line if missing
+  # ... other test gems (rspec-rails, etc.)
+end
+
 group :development, :test do
   #Gemfile
   gem "factory_bot_rails"
 end
 
 gem "bcrypt", "~> 3.1"
+
+gem 'bootstrap', '~> 5.3'
+gem 'sassc-rails'
+gem "kaminari"

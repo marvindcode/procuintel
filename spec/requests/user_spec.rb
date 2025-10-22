@@ -1,31 +1,22 @@
 require "rails_helper"
 
 RSpec.describe "Users (sign up)", type: :request do
-  before do
-    host! "www.example.com"
-  end
-
-  it "debug host" do
-    get new_user_registration_path  
-    puts "HOST SEEN: #{request.host}"
-  end
-
   it "GET /users/new is public" do
-    get new_user_registration_path  
+    get new_user_path
     expect(response).to have_http_status(:ok)
   end
 
   it "POST /users creates a user (public)" do
-    post user_registration_path, params: {  
+    post users_path, params: {
       user: {
         name: "A",
-        username: "a1_#{rand(1000)}", 
-        email: "a@example.com",  
+        username: "a1_#{rand(1000)}",
         password: "secret123",
         password_confirmation: "secret123",
         role: "viewer"
       }
     }
-    expect(response).to have_http_status(:redirect).or have_http_status(:found)
+    expect(response).to redirect_to(root_path) 
+    expect(User.last.username).to start_with("a1_")
   end
 end

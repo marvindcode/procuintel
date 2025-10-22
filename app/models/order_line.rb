@@ -13,7 +13,6 @@ class OrderLine < ApplicationRecord
 
   private
   def recalc_order_total
-    order.recalc_total!
+    order.recalc_total!  
   end
-
 end

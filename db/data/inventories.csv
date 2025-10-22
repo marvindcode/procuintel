@@ -1,0 +1,3 @@
+warehouse_name,part_number,quantity,safe_inventory,unit_of_measure,value,uom_code,status
+Main DC,P-1001,50,100,ea,0.12,ea,0
+Main DC,BX-200,200,150,ea,0.55,ea,0
