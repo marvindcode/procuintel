@@ -1,0 +1,7 @@
+id,name,username,password_digest,role,email
+1,Brendan Murry,bm11575,$2a$12$fakehash1,admin,brendan.murry@superstore.com
+2,Lena Radford,lr16915,$2a$12$fakehash2,viewer,lena.radford@superstore.com
+3,Christine Abelman,ca12310,$2a$12$fakehash3,admin,christine.abelman@superstore.com
+4,Bill Overfelt,bo11350,$2a$12$fakehash4,admin,bill.overfelt@superstore.com
+5,Erica Bern,eb13975,$2a$12$fakehash5,admin,erica.bern@superstore.com
+6,Ben Peterman,bp11185,$2a$12$fakehash6,admin,ben.peterman@superstore.com

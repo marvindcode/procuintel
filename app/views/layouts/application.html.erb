@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= content_for(:title) || "Procuintel" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>Procuintel</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-weight:600">Procuintel</div>
+      <nav>
+        <%= link_to "Dashboard", dashboard_path, class: "btn secondary" %>
+        <%= link_to "Parts", parts_path, class: "btn secondary" %>
+        <%= link_to "Inventories", inventories_path, class: "btn secondary" %>
+        <%= link_to "Warehouses", warehouses_path, class: "btn secondary" %>
+        <% if user_signed_in? %>
+          <span style="margin:0 8px">Signed in as <%= current_user.email %></span>
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn secondary", form: { style: "display:inline" } %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class: "btn" %>
+        <% end %>
+      </nav>
+    </div>
+  </header>
 
-    <%= yield :head %>
+  <div class="container">
+    <% if notice %><div class="flash notice"><%= notice %></div><% end %>
+    <% if alert %><div class="flash alert"><%= alert %></div><% end %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
-
-  <body>
+    <!-- THIS renders each page (Devise forms, dashboard, parts, etc.) -->
     <%= yield %>
-  </body>
+  </div>
+
+  <footer class="footer">© <%= Time.current.year %> Procuintel. All rights reserved.</footer>
+</body>
 </html>
+

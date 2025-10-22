@@ -1,14 +1,12 @@
 class Order < ApplicationRecord
-  enum :status, { draft: 0, pending: 1, approved: 2, received: 3, canceled: 4 }  # ← change this too
-
-  belongs_to :user
+  belongs_to :vendor
+  belongs_to :user, foreign_key: :buyer_id
   has_many :order_lines, dependent: :destroy
-  has_many :parts, through: :order_lines
+  accepts_nested_attributes_for :order_lines, allow_destroy: true
+  before_save :calculate_total 
 
-  validates :purchase_number, presence: true, uniqueness: true
-  validates :order_total, numericality: { greater_than_or_equal_to: 0 }
-
-  def recalc_total!
-    update!(order_total: order_lines.sum('quantity * price'))
+  private
+  def calculate_total
+    self.order_total = order_lines.sum { |ol| ol.quantity * ol.price }
   end
 end

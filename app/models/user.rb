@@ -1,7 +1,12 @@
 class User < ApplicationRecord
-  enum :user_role, { viewer: 0, buyer: 1, admin: 2 } 
+  # devise modules…
+  devise :database_authenticatable, :registerable, :recoverable,
+         :rememberable, :validatable, :trackable
 
-  has_many :orders, dependent: :nullify
-  validates :name,  presence: true
-  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
+
+  before_validation do
+    self.username = username.to_s.strip.downcase.presence
+    self.email    = email.to_s.strip.downcase.presence
+  end
 end

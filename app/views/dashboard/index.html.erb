@@ -1,0 +1,59 @@
+<h1>Procuintel Dashboard</h1>
+
+<ul>
+  <li>Active Parts: <strong><%= link_to @parts_count, parts_path %></strong></li>
+  <li>Vendors: <strong><%= link_to @vendors_count, vendors_path %></strong></li>
+  <li>Warehouses: <strong><%= link_to @warehouses_count, warehouses_path %></strong></li>
+  <li>Inventory Records: <strong><%= link_to @inventories_count, inventories_path %></strong></li>
+</ul>
+
+<div class="card">
+  <h3>Low Stock (<= safe inventory)</h3>
+  <p>
+    <%= link_to "Browse Parts", parts_path, class: "btn secondary" %>
+    <%= link_to "Browse Inventories", inventories_path, class: "btn secondary" %>
+    <% if current_user&.role == "admin" %>
+      <%= link_to "New Part", new_part_path, class: "btn" %>
+    <% end %>
+  </p>
+  <% if @low_stock.present? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Warehouse</th>
+          <th>Part (SKU — Name)</th>
+          <th>Qty</th>
+          <th>Safe</th>
+          <th>Reorder</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @low_stock.each do |inv| %>
+          <% part = inv.part %>
+          <% wh   = inv.warehouse %>
+          <tr>
+            <td>
+              <% if wh %>
+                <%= link_to wh.name, warehouse_path(wh) %>
+              <% else %>
+                –
+              <% end %>
+            </td>
+            <td>
+              <% if part %>
+                <%= link_to "#{part.part_number} — #{part.name}", part_path(part) %>
+              <% else %>
+                (missing part)
+              <% end %>
+            </td>
+            <td><%= inv.quantity %></td>
+            <td><%= inv.safe_inventory %></td>
+            <td><%= inv.reorder_qty %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No low-stock items.</p>
+  <% end %>
+</div>

@@ -1,0 +1,3 @@
+part_number,name,category,description,price,uom_code,lead_time,is_active
+P-1001,"Bolt 1/4""",Hardware,Zinc plated bolt,0.12,ea,7,true
+BX-200,Cardboard Box,Packaging,12x9x4 box,0.55,ea,3,true

@@ -17,6 +17,8 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem "pundit"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
@@ -43,7 +45,8 @@ gem "thruster", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-  gem 'rspec-rails', '~> 8.0.0'
+  gem "devise"
+  gem "rspec-rails", "~> 8.0.0"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -56,3 +59,19 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
+group :test do
+  gem 'factory_bot_rails'  # Add this line if missing
+  # ... other test gems (rspec-rails, etc.)
+end
+
+group :development, :test do
+  #Gemfile
+  gem "factory_bot_rails"
+end
+
+gem "bcrypt", "~> 3.1"
+
+gem 'bootstrap', '~> 5.3'
+gem 'sassc-rails'
+gem "kaminari"

@@ -1,5 +1,6 @@
 class DemandForecastsController < ApplicationController
   def index
-    @forecasts = DemandForecast.includes(:part, :warehouse).order(forecast_date: :desc)
+    @forecasts = DemandForecast.all 
+    render :index 
   end
 end
